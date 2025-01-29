@@ -1,0 +1,126 @@
+---
+apiVersion: hco.kubevirt.io/v1beta1
+kind: HyperConverged
+metadata:
+  name: kubevirt-hyperconverged
+  annotations:
+    deployOVS: 'false'
+spec:
+  liveMigrationConfig:
+    allowAutoConverge: false
+    allowPostCopy: true
+    completionTimeoutPerGiB: 800
+    parallelMigrationsPerCluster: 5
+    parallelOutboundMigrationsPerNode: 2
+    progressTimeout: 150
+  certConfig:
+    ca:
+      duration: 48h0m0s
+      renewBefore: 24h0m0s
+    server:
+      duration: 24h0m0s
+      renewBefore: 12h0m0s
+  featureGates:
+    deployKubeSecondaryDNS: false
+    deployTektonTaskResources: true
+    disableMDevConfiguration: false
+    enableCommonBootImageImport: true
+    nonRoot: true
+    withHostPassthroughCPU: true
+  workloadUpdateStrategy:
+    batchEvictionInterval: 1m0s
+    batchEvictionSize: 10
+    workloadUpdateMethods:
+      - LiveMigrate
+  uninstallStrategy: BlockUninstallIfWorkloadsExist
+  # Avoids OOMKilled on image importing: https://access.redhat.com/solutions/6988046
+  resourceRequirements:
+    storageWorkloads:
+      limits:
+        cpu: "500m"
+        memory: "2Gi"
+      requests:
+        cpu: "250m"
+        memory: "1Gi"
+
+  # ========================================================================================
+  # Disconnected/Private Registry Configuration
+  # ========================================================================================
+
+  storageImport:
+    # Disable TLS validation for the private registry
+    insecureRegistries:
+      - quay-ptc.jfrog.lab.kemo.network
+
+  # In disconnected environments you have to specifically tell the operator to use the disconnected registry
+  # It doesn't pick it up from the global cluster mirror configuration :)
+  # You can source the default values provided by the operator by looking at the .status and copying the values, modifying them as needed, and then applying the changes to the .spec
+  # The operator will then apply the changes to the cluster
+  # Below is an example of how to configure the operator to use a disconnected registry for the default boot sources
+  dataImportCronTemplates:
+    - metadata:
+        annotations:
+          cdi.kubevirt.io/storage.bind.immediate.requested: 'true'
+        labels:
+          kubevirt.io/dynamic-credentials-support: 'true'
+        name: centos-stream8-image-cron
+      spec:
+        garbageCollect: Outdated
+        managedDataSource: centos-stream8
+        schedule: 30 7/12 * * *
+        template:
+          metadata: {}
+          spec:
+            source:
+              registry:
+                pullMethod: node
+                url: 'docker://quay-ptc.jfrog.lab.kemo.network/containerdisks/centos-stream:8'
+                secretRef: jfrog-ps
+            storage:
+              resources:
+                requests:
+                  storage: 30Gi
+    - metadata:
+        annotations:
+          cdi.kubevirt.io/storage.bind.immediate.requested: 'true'
+        labels:
+          kubevirt.io/dynamic-credentials-support: 'true'
+        name: centos-stream9-image-cron
+      spec:
+        garbageCollect: Outdated
+        managedDataSource: centos-stream9
+        schedule: 30 7/12 * * *
+        template:
+          metadata: {}
+          spec:
+            source:
+              registry:
+                pullMethod: node
+                url: 'docker://quay-ptc.jfrog.lab.kemo.network/containerdisks/centos-stream:9'
+                secretRef: jfrog-ps
+            storage:
+              resources:
+                requests:
+                  storage: 30Gi
+    - metadata:
+        annotations:
+          cdi.kubevirt.io/storage.bind.immediate.requested: 'true'
+        labels:
+          kubevirt.io/dynamic-credentials-support: 'true'
+        name: fedora-image-cron
+      spec:
+        garbageCollect: Outdated
+        managedDataSource: fedora
+        schedule: 30 7/12 * * *
+        template:
+          metadata: {}
+          spec:
+            source:
+              registry:
+                pullMethod: node
+                url: 'docker://quay-ptc.jfrog.lab.kemo.network/containerdisks/fedora:latest'
+                secretRef: jfrog-ps
+            storage:
+              resources:
+                requests:
+                  storage: 30Gi
