@@ -12,19 +12,19 @@ spec:
 apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
 metadata:
-  name: openshift-v41543
-  labels:
-    channel: stable
-    visible: 'true'
-spec:
-  releaseImage: quay.io/openshift-release-dev/ocp-release:4.15.43-x86_64
----
-apiVersion: hive.openshift.io/v1
-kind: ClusterImageSet
-metadata:
   name: openshift-v41630
   labels:
     channel: stable
     visible: 'true'
 spec:
   releaseImage: quay.io/openshift-release-dev/ocp-release:4.16.30-x86_64
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterImageSet
+metadata:
+  name: openshift-v41543
+  labels:
+    channel: stable
+    visible: 'true'
+spec:
+  releaseImage: quay.io/openshift-release-dev/ocp-release:4.15.43-x86_64

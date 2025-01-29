@@ -12,6 +12,8 @@ To make this easy in an OpenShift hub cluster that has outbound proxy access, th
 
 ## Create Mirror Registry ConfigMap
 
+> For disconnected/proxied environments, and/or with private (mirror) image registries
+
 If you're using some mirror image registries and/or custom Root CAs that sign it, you'll need to create a ConfigMap before deploying the Assisted Service - modify as needed to point to your mirror endpoint paths:
 
 ```yaml
@@ -95,6 +97,8 @@ More Info: https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_man
 
 ## Define ClusterImageSets
 
+> For disconnected/proxied environments, and/or with private (mirror) image registries
+
 In case you're in a disconnected environment, or you just want to manage the versions of OpenShift you deploy, you'll need to create some ClusterImageSets:
 
 ```yaml
@@ -108,17 +112,10 @@ metadata:
     channel: stable
     visible: 'true'
 spec:
+  # If you have ImageTagMirrorSet(s) enabled on your cluster
   releaseImage: quay.io/openshift-release-dev/ocp-release:4.17.12-x86_64
----
-apiVersion: hive.openshift.io/v1
-kind: ClusterImageSet
-metadata:
-  name: openshift-v41543
-  labels:
-    channel: stable
-    visible: 'true'
-spec:
-  releaseImage: quay.io/openshift-release-dev/ocp-release:4.15.43-x86_64
+  # If you do not have ITMS/IDMS enabled on the cluster
+  #releaseImage: quay-ptc.jfrog.lab.kemo.network/openshift-release-dev/ocp-release:4.17.12-x86_64
 ---
 apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
@@ -128,7 +125,23 @@ metadata:
     channel: stable
     visible: 'true'
 spec:
+  # If you have ImageTagMirrorSet(s) enabled on your cluster
   releaseImage: quay.io/openshift-release-dev/ocp-release:4.16.30-x86_64
+  # If you do not have ITMS/IDMS enabled on the cluster
+  #releaseImage: quay-ptc.jfrog.lab.kemo.network/openshift-release-dev/ocp-release:4.16.30-x86_64
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterImageSet
+metadata:
+  name: openshift-v41543
+  labels:
+    channel: stable
+    visible: 'true'
+spec:
+  # If you have ImageTagMirrorSet(s) enabled on your cluster
+  releaseImage: quay.io/openshift-release-dev/ocp-release:4.15.43-x86_64
+  # If you do not have ITMS/IDMS enabled on the cluster
+  #releaseImage: quay-ptc.jfrog.lab.kemo.network/openshift-release-dev/ocp-release:4.15.43-x86_64
 ```
 
 ## Define the Metal3 Provisioning Service
@@ -152,6 +165,8 @@ spec:
 ```
 
 ## Deploy the Assisted Service
+
+> For HCP/Host Inventory usage
 
 The Assisted Service handles creating installation ISOs for our managed clusters - with everything in place, we can now deploy it:
 

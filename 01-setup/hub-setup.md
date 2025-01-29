@@ -53,7 +53,6 @@ data:
 
 If you're pulling from private image registries signed by a private CA, you'll need to configure that per-registry endpoint.  Do so by creating a ConfigMap as follows:
 
-
 ```yaml
 ---
 apiVersion: v1
