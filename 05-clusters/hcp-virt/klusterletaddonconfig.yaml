@@ -1,0 +1,20 @@
+---
+apiVersion: agent.open-cluster-management.io/v1
+kind: KlusterletAddonConfig
+metadata:
+  name: 'hypershift-virt'
+  namespace: 'hypershift-virt'
+spec:
+  clusterName: 'hypershift-virt'
+  clusterNamespace: 'hypershift-virt'
+  clusterLabels:
+    cloud: BareMetal
+    vendor: OpenShift
+  applicationManager:
+    enabled: true
+  policyController:
+    enabled: true
+  searchCollector:
+    enabled: true
+  certPolicyController:
+    enabled: true

@@ -1,0 +1,83 @@
+---
+apiVersion: hypershift.openshift.io/v1beta1
+kind: HostedCluster
+metadata:
+  name: 'hypershift-virt'
+  namespace: 'clusters'
+  labels:
+    "cluster.open-cluster-management.io/clusterset": 'default'
+spec:
+  controllerAvailabilityPolicy: SingleReplica
+  infrastructureAvailabilityPolicy: SingleReplica
+  pullSecret:
+    name: pullsecret-cluster-hypershift-virt
+  sshKey:
+    name: sshkey-cluster-hypershift-virt
+  platform:
+    type: KubeVirt
+    kubevirt:
+      baseDomainPassthrough: true
+  infraID: 'hypershift-virt'
+  etcd:
+    managed:
+      storage:
+        persistentVolume:
+          size: 8Gi
+          #storageClassName: lvms-vg1
+        type: PersistentVolume
+    managementType: Managed
+  networking:
+    clusterNetwork:
+      - cidr: 10.132.0.0/14
+    serviceNetwork:
+      - cidr: 172.31.0.0/16
+    networkType: OVNKubernetes
+  services:
+  - service: OAuthServer
+    servicePublishingStrategy:
+      type: Route
+  - service: OIDC
+    servicePublishingStrategy:
+      type: Route
+  - service: Konnectivity
+    servicePublishingStrategy:
+      type: Route
+  - service: Ignition
+    servicePublishingStrategy:
+      type: Route
+  olmCatalogPlacement: guest
+
+  release:
+    image: quay.io/openshift-release-dev/ocp-release:4.17.12-x86_64
+    # Disconnected/Mirror registry
+    #image: quay-ptc.jfrog.lab.kemo.network/openshift-release-dev/ocp-release:4.17.12-x86_64
+
+  # ========================================================================================
+  # Additional Trust Bundle Configuration
+  # ========================================================================================
+  additionalTrustBundle:
+    name: user-ca-bundle
+  configuration:
+    image:
+      additionalTrustedCA:
+        name: user-ca-bundle
+
+  # ========================================================================================
+  # Disconnected/Private Registry Configuration
+  # ========================================================================================
+  imageContentSources:
+  - source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+    mirrors:
+      - quay-ptc.jfrog.lab.kemo.network/openshift-release-dev/ocp-v4.0-art-dev
+  - source: quay.io/openshift-release-dev/ocp-release
+    mirrors:
+      - quay-ptc.jfrog.lab.kemo.network/openshift-release-dev/ocp-release
+  - source: quay.io
+    mirrors:
+      - quay-ptc.jfrog.lab.kemo.network
+  - source: registry.redhat.io
+    mirrors:
+      - registry-redhat-ptc.jfrog.lab.kemo.network
+  - source: registry.connect.redhat.com
+    mirrors:
+      - registry-connect-redhat-ptc.jfrog.lab.kemo.network

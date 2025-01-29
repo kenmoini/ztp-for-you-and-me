@@ -1,0 +1,113 @@
+---
+apiVersion: agent-install.openshift.io/v1beta1
+kind: NMStateConfig
+metadata:
+  name: hypershift-bmh-suki
+  namespace: hypershift-bmh
+  labels:
+    agent-install.openshift.io/bmh: hypershift-bmh-suki
+    infraenvs.agent-install.openshift.io: hypershift-bmh
+spec:
+  config:
+    interfaces:
+      - name: eno1
+        type: ethernet
+        state: up
+        lldp:
+          enabled: false
+      - name: eno2
+        type: ethernet
+        state: up
+        lldp:
+          enabled: false
+      - name: eno3
+        type: ethernet
+        state: up
+        lldp:
+          enabled: false
+      - name: eno4
+        type: ethernet
+        state: up
+        lldp:
+          enabled: false
+
+      - name: bond0
+        type: bond
+        state: up
+        lldp:
+          enabled: false
+        link-aggregation:
+          mode: 802.3ad
+          port:
+            - eno1
+            - eno2
+
+      - name: bond1
+        type: bond
+        state: up
+        lldp:
+          enabled: false
+        link-aggregation:
+          mode: 802.3ad
+          port:
+            - eno3
+            - eno4
+
+      - name: bond0.70
+        type: vlan
+        state: up
+        lldp:
+          enabled: false
+        vlan:
+          id: 70
+          base-iface: bond0
+        ipv4:
+          address:
+            - ip: 192.168.70.46
+              prefix-length: 23
+          dhcp: false
+          enabled: true
+
+      - name: bond1.86
+        type: vlan
+        state: up
+        lldp:
+          enabled: false
+        vlan:
+          id: 86
+          base-iface: bond1
+        ipv4:
+          address:
+            - ip: 192.168.86.46
+              prefix-length: 24
+          dhcp: false
+          enabled: true
+    dns-resolver:
+      config:
+        search:
+        - kemo.labs
+        - kemo.network
+        server:
+        - 192.168.42.11
+    routes:
+      config:
+        - destination: 0.0.0.0/0
+          metric: 150
+          next-hop-address: 192.168.70.1
+          next-hop-interface: bond0.70
+          table-id: 254
+        - destination: 192.168.86.0/24
+          metric: 250
+          next-hop-address: 192.168.86.1
+          next-hop-interface: bond1.86
+          table-id: 254
+  interfaces:
+    - macAddress: 7C:C2:55:E1:7E:F8
+      name: eno1
+    - macAddress: 7C:C2:55:E1:7E:F9
+      name: eno2
+    # Mellanox NICs
+    - name: eno3
+      macAddress: 04:3f:72:bd:0e:c2
+    - name: eno4
+      macAddress: 04:3f:72:bd:0e:c3

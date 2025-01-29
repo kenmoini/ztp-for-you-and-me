@@ -1,0 +1,17 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespaces.yaml
+  - secret-pull-secret.yaml
+  - secret-ssh-key.yaml
+  - configmap-ca.yaml
+  - config-ntp.yaml
+  - config-imagemirrors.yaml
+  - config-imagemirrors.yaml
+  - config-machineconfig-imgtag.yaml
+  - nodepool.yaml
+  - managedcluster.yaml
+  - klusterletaddonconfig.yaml
+  - hostedcluster.yaml

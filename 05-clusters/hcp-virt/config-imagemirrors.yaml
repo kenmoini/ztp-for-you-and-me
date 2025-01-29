@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-imagemirrors
+  namespace: 'clusters'
+data:
+  config: |
+    apiVersion: config.openshift.io/v1
+    kind: ImageDigestMirrorSet
+    metadata:
+      name: image-digest-mirror
+    spec:
+      imageDigestMirrors:
+        - mirrors:
+            - quay-ptc.jfrog.lab.kemo.network/openshift-release-dev/ocp-release
+          source: quay.io/openshift-release-dev/ocp-release
+        - mirrors:
+            - quay-ptc.jfrog.lab.kemo.network/openshift-release-dev/ocp-v4.0-art-dev
+          source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+        - mirrors:
+            - quay-ptc.jfrog.lab.kemo.network
+          source: quay.io
+        - mirrors:
+            - registry-redhat-ptc.jfrog.lab.kemo.network
+          source: registry.redhat.io
+        - mirrors:
+            - registry-connect-redhat-ptc.jfrog.lab.kemo.network
+          source: registry.connect.redhat.com
+        - mirrors:
+            - registry-access-redhat-ptc.jfrog.lab.kemo.network
+          source: registry.access.redhat.com

@@ -1,0 +1,31 @@
+
+---
+apiVersion: hypershift.openshift.io/v1beta1
+kind: NodePool
+metadata:
+  name: 'kiddie-pool'
+  namespace: 'clusters'
+spec:
+  arch: amd64
+  clusterName: 'hypershift-virt'
+  replicas: 1
+  management:
+    autoRepair: false
+    upgradeType: Replace
+  platform:
+    type: KubeVirt
+    kubevirt:
+      compute:
+        cores: 8
+        memory: 16Gi
+      rootVolume:
+        type: Persistent
+        persistent:
+          size: 32Gi
+  release:
+    #image: quay.io/openshift-release-dev/ocp-release:4.17.12-x86_64
+    image: quay-ptc.jfrog.lab.kemo.network/openshift-release-dev/ocp-release:4.17.12-x86_64
+  config:
+    - name: 'config-imagemirrors'
+    - name: 'img-tag-override'
+    - name: '999-chronyd-config'

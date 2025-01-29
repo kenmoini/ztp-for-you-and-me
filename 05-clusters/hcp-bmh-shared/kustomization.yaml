@@ -1,0 +1,13 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - pull-secret.yaml
+  - rbac.yaml
+  - infraenv.yaml
+  - nmstateconfig-raza.yaml
+  - nmstateconfig-suki.yaml
+  - bmh-raza.yaml
+  - bmh-suki.yaml

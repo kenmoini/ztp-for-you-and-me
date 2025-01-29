@@ -66,8 +66,8 @@ Find additional details in the [./02-rhacm-config](./02-rhacm-config) folder.
 
 With everything in its right place, you can now start to declaratively create clusters - so choose your own adventure:
 
-- [./05-hcp-bmh - HCP to Bare Metal Hosts](./05-hcp-bmh)
-- [./05-hcp-virt - HCP to OpenShift Virtualization](./05-hcp-virt)
+- [./05-clusters/hcp-bmh - HCP to Bare Metal Hosts](./05-clusters/hcp-bmh)
+- [./05-clusters/hcp-virt - HCP to OpenShift Virtualization](./05-clusters/hcp-virt)
 
 ---
 
