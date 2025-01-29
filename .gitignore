@@ -1,0 +1,5 @@
+05-clusters/hcp-bmh-shared/pull-secret.yaml
+05-clusters/hcp-bmh-shared/secret-pull-secret.yaml
+05-clusters/hcp-bmh1/pull-secret.yaml
+05-clusters/hcp-bmh2/pull-secret.yaml
+05-clusters/hcp-virt/pull-secret.yaml
