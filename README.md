@@ -105,10 +105,10 @@ This is probably because like me, you use the magic ConfigMap label that injects
 
 Evidently SuperMicro X11 servers can't use ISOs from HTTPS - https://docs.openshift.com/container-platform/4.16/edge_computing/ztp-deploying-far-edge-sites.html#ztp-troubleshooting-ztp-gitops-supermicro-tls_ztp-deploying-far-edge-sites
 
-This patch is provided in [](./ztp/base/metal3_provisioning.yaml)
+This patch is provided in [./01-setup/manifests/acm-mce-hcp/metal3_provisioning.yaml](./01-setup/manifests/acm-mce-hcp/metal3_provisioning.yaml)
 
 ### HyperShift Monitoring Bug
 
 IDK - just read this: https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.11/html/clusters/cluster_mce_overview#monitor-user-workload-disconnected
 
-That patch is provided in [./ztp/base/hypershift-flags.yaml](./ztp/base/hypershift-flags.yaml)
+That patch is provided in [./01-setup/manifests/acm-mce-hcp/hypershift-flags.yaml](./01-setup/manifests/acm-mce-hcp/hypershift-flags.yaml)

@@ -1,0 +1,52 @@
+---
+apiVersion: agent-install.openshift.io/v1beta1
+kind: AgentServiceConfig
+metadata:
+  name: agent
+  annotations:
+    unsupported.agent-install.openshift.io/assisted-service-configmap: "assisted-service-config"
+    unsupported.agent-install.openshift.io/assisted-image-service-skip-verify-tls: "true"
+###
+spec:
+  databaseStorage:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+  filesystemStorage:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 50Gi
+  imageStorage:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 50Gi
+
+# ========================================================================================
+# Disconnected/Private Registry Configuration
+# ========================================================================================
+#  mirrorRegistryRef:
+#    name: mirror-registry-config
+#  osImages:
+#    - openshiftVersion: "4.17"
+#      version: "417.94.202501071621-0"
+#      url: "http://ztp-mirror.multicluster-engine.svc.cluster.local:8080/pub/openshift-v4/x86_64/dependencies/rhcos/4.17/latest/rhcos-live.x86_64.iso"
+#      rootFSUrl: "http://ztp-mirror.multicluster-engine.svc.cluster.local:8080/pub/openshift-v4/x86_64/dependencies/rhcos/4.17/latest/rhcos-live-rootfs.x86_64.img"
+#      cpuArchitecture: x86_64
+#
+#    - openshiftVersion: "4.16"
+#      version: "416.94.202501030250-0"
+#      url: "http://ztp-mirror.multicluster-engine.svc.cluster.local:8080/pub/openshift-v4/x86_64/dependencies/rhcos/4.16/latest/rhcos-live.x86_64.iso"
+#      rootFSUrl: "http://ztp-mirror.multicluster-engine.svc.cluster.local:8080/pub/openshift-v4/x86_64/dependencies/rhcos/4.16/latest/rhcos-live-rootfs.x86_64.img"
+#      cpuArchitecture: x86_64
+#
+#    - openshiftVersion: "4.15"
+#      version: "415.92.202501080724-0"
+#      url: "http://ztp-mirror.multicluster-engine.svc.cluster.local:8080/pub/openshift-v4/x86_64/dependencies/rhcos/4.15/latest/rhcos-live.x86_64.iso"
+#      rootFSUrl: "http://ztp-mirror.multicluster-engine.svc.cluster.local:8080/pub/openshift-v4/x86_64/dependencies/rhcos/4.15/latest/rhcos-live-rootfs.x86_64.img"
+#      cpuArchitecture: x86_64

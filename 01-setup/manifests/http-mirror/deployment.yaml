@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mirror-server
+spec:
+  selector:
+    matchLabels:
+      app: mirror-server
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mirror-server
+    spec:
+      volumes:
+        - name: ztp-mirror
+          persistentVolumeClaim:
+            claimName: ztp-mirror
+        - name: mirror-config
+          configMap:
+            name: mirror-config
+        - name: trusted-ca
+          configMap:
+            name: trusted-ca
+            items:
+              - key: ca-bundle.crt
+                path: tls-ca-bundle.pem
+      containers:
+        - name: mirror-server
+          image: quay.io/kenmoini/go-http-mirror:latest
+          imagePullPolicy: Always
+          # Uncomment these things to work through a proxy
+          #env:
+          #  - name: HTTP_PROXY
+          #    value: http://proxy.kemo.labs:3128
+          #  - name: http_proxy
+          #    value: http://proxy.kemo.labs:3128
+          #  - name: HTTPS_PROXY
+          #    value: http://proxy.kemo.labs:3128
+          #  - name: https_proxy
+          #    value: http://proxy.kemo.labs:3128
+          #  - name: NO_PROXY
+          #    value: '.kemo.labs,.kemo.network,192.168.0.0/16,172.16.0.0/12,10.0.0.0/8'
+          #  - name: no_proxy
+          #    value: '.kemo.labs,.kemo.network,192.168.0.0/16,172.16.0.0/12,10.0.0.0/8'
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "100Mi"
+            limits:
+              cpu: "500m"
+              memory: "500Mi"
+          volumeMounts:
+            - name: mirror-config
+              mountPath: /etc/ztp-mirror
+            - name: ztp-mirror
+              mountPath: /tmp/server/pub
+            - mountPath: /etc/pki/ca-trust/extracted/pem
+              name: trusted-ca
+              readOnly: true

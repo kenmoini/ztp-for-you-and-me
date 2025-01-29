@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mirror-config
+data:
+  config.yml: |-
+    app:
+      assets:
+        - source: https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.17/latest/rhcos-live.x86_64.iso
+          destination: "/tmp/server/pub/openshift-v4/x86_64/dependencies/rhcos/4.17/latest/rhcos-live.x86_64.iso"
+          #overwrite: true
+        - source: https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.17/latest/rhcos-live-rootfs.x86_64.img
+          destination: "/tmp/server/pub/openshift-v4/x86_64/dependencies/rhcos/4.17/latest/rhcos-live-rootfs.x86_64.img"
+          #overwrite: true
+
+        - source: https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.16/latest/rhcos-live.x86_64.iso
+          destination: "/tmp/server/pub/openshift-v4/x86_64/dependencies/rhcos/4.16/latest/rhcos-live.x86_64.iso"
+          #overwrite: true
+        - source: https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.16/latest/rhcos-live-rootfs.x86_64.img
+          destination: "/tmp/server/pub/openshift-v4/x86_64/dependencies/rhcos/4.16/latest/rhcos-live-rootfs.x86_64.img"
+          #overwrite: true
+
+        - source: https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.15/latest/rhcos-live.x86_64.iso
+          destination: "/tmp/server/pub/openshift-v4/x86_64/dependencies/rhcos/4.15/latest/rhcos-live.x86_64.iso"
+          #overwrite: true
+        - source: https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.15/latest/rhcos-live-rootfs.x86_64.img
+          destination: "/tmp/server/pub/openshift-v4/x86_64/dependencies/rhcos/4.15/latest/rhcos-live-rootfs.x86_64.img"
+          #overwrite: true
+      server:
+        host: 0.0.0.0
+        base_path: "/pub/"
+        fs_path: "/tmp/server/pub"
+        skip_tls_verify: true
+        port: 8080
+        timeouts:
+          server: 0
+          read: 0
+          write: 0
+          idle: 0

@@ -33,7 +33,7 @@ oc apply -k 99-operators/advanced-cluster-management/instance/base/
 oc apply -k 99-operators/advanced-cluster-management/instance/observability/
 ```
 
-Once everything is rolled out and deployed, you should be able to refresh the Web UI and have access to the ACM dashboard.  By default, ACM is not configured for a few key capabilities such as provisioning bare metal servers, but that and more will be detailed below.
+The Multi Cluster Engine Operator is also installed by default when deploying ACM.  Once everything is rolled out and deployed, you should be able to refresh the Web UI and have access to the ACM dashboard.  By default, ACM is not configured for a few key capabilities such as provisioning bare metal servers, but that and more will be detailed below.
 
 ---
 
