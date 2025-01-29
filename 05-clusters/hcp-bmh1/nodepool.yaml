@@ -1,13 +1,11 @@
-
 ---
 apiVersion: hypershift.openshift.io/v1beta1
 kind: NodePool
 metadata:
-  name: 'kiddie-pool'
-  namespace: 'clusters'
+  name: 'nodepool-hcp-bmh1-1'
+  namespace: 'hcp-bmh'
 spec:
-  arch: amd64
-  clusterName: 'hypershift-virt'
+  clusterName: 'hcp-bmh1'
   replicas: 1
   release:
     # If connected to the internet, or with ITMS
@@ -15,19 +13,16 @@ spec:
     # If disconnected from the internet, mirror/proxy registry used
     #image: quay-ptc.jfrog.lab.kemo.network/openshift-release-dev/ocp-release:4.17.12-x86_64
   platform:
-    type: KubeVirt
-    kubevirt:
-      compute:
-        cores: 8
-        memory: 16Gi
-      rootVolume:
-        type: Persistent
-        persistent:
-          size: 32Gi
+    type: Agent
+    agent:
+      agentLabelSelector:
+        matchLabels:
+          'infraenvs.agent-install.openshift.io': 'hcp-bmh'
+          tenant-id: tenant1
   config:
     - name: 'config-imagemirrors'
     - name: 'img-tag-override'
     - name: '999-chronyd-config'
   management:
     autoRepair: false
-    upgradeType: Replace
+    upgradeType: InPlace

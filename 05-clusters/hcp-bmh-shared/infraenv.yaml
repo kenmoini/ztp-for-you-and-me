@@ -2,8 +2,8 @@
 apiVersion: agent-install.openshift.io/v1beta1
 kind: InfraEnv
 metadata:
-  name: hypershift-bmh
-  namespace: hypershift-bmh
+  name: hcp-bmh
+  #namespace: hcp-bmh
   labels:
     agentclusterinstalls.extensions.hive.openshift.io/location: loe-rdu
     networkType: static
@@ -11,11 +11,11 @@ spec:
   agentLabels:
     'agentclusterinstalls.extensions.hive.openshift.io/location': loe-rdu
   pullSecretRef:
-    name: pullsecret-hypershift-bmh
+    name: pull-secret
   sshAuthorizedKey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/UQ6SVJ0Jk/fDfLpecIIIfTe3+Ry+oaF8AFKAZwXJ8xMMmrPcPX1JTb4k/keVPT5liqYLb6pxO9yKUb1fLIKXQj+6OaDFaq7J8O3ad5AjpwMH97pynPtjUnltDIPbMTLOUHMZCrvF/PIn0iQ2lfl48lADD/S/tOPh34TI8fv+miuCO7Gdsk9DqT9SxIRG4oKj7ZKp/PKyWuPheRhJ0KiSeFIHR3dXSJnLiL+JkdBotB4IK78Pygwo6P6Wyl2P4gobkKhy/YuTiSImbaN0G8YMJrUu1EzYQ5QlmNqPKVuFH8te41vxmTX47N5h8vfO9c00YFC5H9mtsPMGXYRTiRkB
   additionalNTPSources:
     - ntp.kemo.labs
   nmStateConfigLabelSelector:
       matchLabels:
-        infraenvs.agent-install.openshift.io: hypershift-bmh
+        infraenvs.agent-install.openshift.io: hcp-bmh
   cpuArchitecture: x86_64

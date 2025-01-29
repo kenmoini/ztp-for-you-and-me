@@ -1,0 +1,59 @@
+# 
+# unqualified-search-registries = ["registry.access.redhat.com", "docker.io"]
+# short-name-mode = ""
+# [[registry]]
+#   prefix = ""
+#   location = "quay.io"
+#   [[registry.mirror]]
+#     location = "quay-ptc.jfrog.lab.kemo.network"
+# [[registry]]
+#   prefix = ""
+#   location = "quay.io/openshift-release-dev/ocp-release"
+#   [[registry.mirror]]
+#     location = "quay-ptc.jfrog.lab.kemo.network/openshift-release-dev/ocp-release"
+# [[registry]]
+#   prefix = ""
+#   location = "quay.io/openshift-release-dev/ocp-v4.0-art-dev"
+#   [[registry.mirror]]
+#     location = "quay-ptc.jfrog.lab.kemo.network/openshift-release-dev/ocp-v4.0-art-dev"
+# [[registry]]
+#   prefix = ""
+#   location = "registry.access.redhat.com"
+#   [[registry.mirror]]
+#     location = "registry-access-redhat-ptc.jfrog.lab.kemo.network"
+# [[registry]]
+#   prefix = ""
+#   location = "registry.connect.redhat.com"
+#   [[registry.mirror]]
+#     location = "registry-connect-redhat-ptc.jfrog.lab.kemo.network"
+# [[registry]]
+#   prefix = ""
+#   location = "registry.redhat.io"
+#   [[registry.mirror]]
+#     location = "registry-redhat-ptc.jfrog.lab.kemo.network"
+#
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: img-tag-override
+  #namespace: hcp-bmh
+data:
+  config: |
+    apiVersion: machineconfiguration.openshift.io/v1
+    kind: MachineConfig
+    metadata:
+      labels:
+        machineconfiguration.openshift.io/role: worker
+      name: img-tag-override
+    spec:
+      config:
+        ignition:
+          version: 3.2.0
+        storage:
+          files:
+          - contents:
+              source: data:text/plain;charset=utf-8;base64,dW5xdWFsaWZpZWQtc2VhcmNoLXJlZ2lzdHJpZXMgPSBbInJlZ2lzdHJ5LmFjY2Vzcy5yZWRoYXQuY29tIiwgImRvY2tlci5pbyJdCnNob3J0LW5hbWUtbW9kZSA9ICIiCltbcmVnaXN0cnldXQogIHByZWZpeCA9ICIiCiAgbG9jYXRpb24gPSAicXVheS5pbyIKICBbW3JlZ2lzdHJ5Lm1pcnJvcl1dCiAgICBsb2NhdGlvbiA9ICJxdWF5LXB0Yy5qZnJvZy5sYWIua2Vtby5uZXR3b3JrIgpbW3JlZ2lzdHJ5XV0KICBwcmVmaXggPSAiIgogIGxvY2F0aW9uID0gInF1YXkuaW8vb3BlbnNoaWZ0LXJlbGVhc2UtZGV2L29jcC1yZWxlYXNlIgogIFtbcmVnaXN0cnkubWlycm9yXV0KICAgIGxvY2F0aW9uID0gInF1YXktcHRjLmpmcm9nLmxhYi5rZW1vLm5ldHdvcmsvb3BlbnNoaWZ0LXJlbGVhc2UtZGV2L29jcC1yZWxlYXNlIgpbW3JlZ2lzdHJ5XV0KICBwcmVmaXggPSAiIgogIGxvY2F0aW9uID0gInF1YXkuaW8vb3BlbnNoaWZ0LXJlbGVhc2UtZGV2L29jcC12NC4wLWFydC1kZXYiCiAgW1tyZWdpc3RyeS5taXJyb3JdXQogICAgbG9jYXRpb24gPSAicXVheS1wdGMuamZyb2cubGFiLmtlbW8ubmV0d29yay9vcGVuc2hpZnQtcmVsZWFzZS1kZXYvb2NwLXY0LjAtYXJ0LWRldiIKW1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJyZWdpc3RyeS5hY2Nlc3MucmVkaGF0LmNvbSIKICBbW3JlZ2lzdHJ5Lm1pcnJvcl1dCiAgICBsb2NhdGlvbiA9ICJyZWdpc3RyeS1hY2Nlc3MtcmVkaGF0LXB0Yy5qZnJvZy5sYWIua2Vtby5uZXR3b3JrIgpbW3JlZ2lzdHJ5XV0KICBwcmVmaXggPSAiIgogIGxvY2F0aW9uID0gInJlZ2lzdHJ5LmNvbm5lY3QucmVkaGF0LmNvbSIKICBbW3JlZ2lzdHJ5Lm1pcnJvcl1dCiAgICBsb2NhdGlvbiA9ICJyZWdpc3RyeS1jb25uZWN0LXJlZGhhdC1wdGMuamZyb2cubGFiLmtlbW8ubmV0d29yayIKW1tyZWdpc3RyeV1dCiAgcHJlZml4ID0gIiIKICBsb2NhdGlvbiA9ICJyZWdpc3RyeS5yZWRoYXQuaW8iCiAgW1tyZWdpc3RyeS5taXJyb3JdXQogICAgbG9jYXRpb24gPSAicmVnaXN0cnktcmVkaGF0LXB0Yy5qZnJvZy5sYWIua2Vtby5uZXR3b3JrIgo=
+            mode: 420
+            overwrite: true
+            path: /etc/containers/registries.conf.d/010-override-imagetag.conf

@@ -2,8 +2,8 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: hypershift-bmh-raza-bmc-secret
-  namespace: hypershift-bmh
+  name: hcp-bmh-raza-bmc-secret
+  #namespace: hcp-bmh
 stringData:
   password: n0tPassword
   username: ansible
@@ -12,10 +12,10 @@ type: Opaque
 apiVersion: metal3.io/v1alpha1
 kind: BareMetalHost
 metadata:
-  name: hypershift-bmh-raza
-  namespace: hypershift-bmh
+  name: hcp-bmh-raza
+  #namespace: hcp-bmh
   labels:
-    infraenvs.agent-install.openshift.io: hypershift-bmh
+    infraenvs.agent-install.openshift.io: hcp-bmh
     tenant-id: tenant2
   annotations:
     inspect.metal3.io: disabled
@@ -24,7 +24,7 @@ spec:
   automatedCleaningMode: disabled
   bmc:
     disableCertificateVerification: true
-    credentialsName: hypershift-bmh-raza-bmc-secret
+    credentialsName: hcp-bmh-raza-bmc-secret
     # This address works for a SuperMicro BMC
     address: redfish-virtualmedia://192.168.46.40/redfish/v1/Systems/1
   # This is the MAC address of a non-BMC NIC

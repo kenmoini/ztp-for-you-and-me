@@ -2,11 +2,11 @@
 apiVersion: agent-install.openshift.io/v1beta1
 kind: NMStateConfig
 metadata:
-  name: hypershift-bmh-raza
-  namespace: hypershift-bmh
+  name: hcp-bmh-raza
+  #namespace: hcp-bmh
   labels:
-    agent-install.openshift.io/bmh: hypershift-bmh-raza
-    infraenvs.agent-install.openshift.io: hypershift-bmh
+    agent-install.openshift.io/bmh: hcp-bmh-raza
+    infraenvs.agent-install.openshift.io: hcp-bmh
 spec:
   config:
     interfaces:

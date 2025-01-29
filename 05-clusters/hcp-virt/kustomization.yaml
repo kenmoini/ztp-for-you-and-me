@@ -4,7 +4,7 @@ kind: Kustomization
 
 resources:
   - namespaces.yaml
-  - secret-pull-secret.yaml
+  - pull-secret.yaml
   - secret-ssh-key.yaml
   - configmap-ca.yaml
   - config-ntp.yaml

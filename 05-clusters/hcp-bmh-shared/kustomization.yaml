@@ -2,12 +2,28 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: hcp-bmh
+
 resources:
+  # General Resources
   - namespace.yaml
-  - pull-secret.yaml
   - rbac.yaml
+
+  # Secrets
+  - secret-pull-secret.yaml
+  - secret-ssh-pub-key.yaml
+
+  # Configuration
+  - configmap-ca.yaml
+  - config-ntp.yaml
+  - config-imagemirrors.yaml
+  - config-machineconfig-imgtag.yml
+
+  # Infrastructure Resources
   - infraenv.yaml
-  - nmstateconfig-raza.yaml
-  - nmstateconfig-suki.yaml
+
+  # Bare Metal Host Configuration
   - bmh-raza.yaml
+  - nmstateconfig-raza.yaml
   - bmh-suki.yaml
+  - nmstateconfig-suki.yaml

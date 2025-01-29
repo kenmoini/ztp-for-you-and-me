@@ -2,10 +2,11 @@
 apiVersion: hypershift.openshift.io/v1beta1
 kind: HostedCluster
 metadata:
-  name: 'hypershift-virt'
-  namespace: 'clusters'
+  name: 'hcp-bmh2'
+  namespace: 'hcp-bmh'
   labels:
     "cluster.open-cluster-management.io/clusterset": 'default'
+    hcp-bmh-cluster: "true"
 spec:
   # Either SingleReplica or HighlyAvailable
   controllerAvailabilityPolicy: SingleReplica
@@ -15,15 +16,27 @@ spec:
   release:
     # If connected to the internet, or with ITMS
     image: quay.io/openshift-release-dev/ocp-release:4.17.12-x86_64
-    # Disconnected/Mirror registry
+    # If disconnected from the internet, mirror/proxy registry used
     #image: quay-ptc.jfrog.lab.kemo.network/openshift-release-dev/ocp-release:4.17.12-x86_64
+
+  # Base DNS domain for the cluster - cluster name is from the name of this object is prepended to this
+  dns:
+    baseDomain: 'd70.lab.kemo.network'
+
+  # Agent/Assisted Service BMH installation method
+  platform:
+    type: Agent
+    agent:
+      agentNamespace: 'hcp-bmh'
+  # infraID is the InfraEnv name
+  infraID: 'hcp-bmh'
 
   # If doing multi-cluster networking, make sure to set these to different ranges between the clusters - the examples already do so
   networking:
     clusterNetwork:
-      - cidr: 10.140.0.0/14
+      - cidr: 10.136.0.0/14
     serviceNetwork:
-      - cidr: 172.33.0.0/16
+      - cidr: 172.32.0.0/16
     networkType: OVNKubernetes
 
   # General configuration
@@ -31,21 +44,11 @@ spec:
     name: pull-secret
   sshKey:
     name: ssh-pub-key
-  platform:
-    type: KubeVirt
-    kubevirt:
-      baseDomainPassthrough: true
-  # infraID is the InfraEnv name
-  infraID: 'hypershift-virt'
-  etcd:
-    managed:
-      storage:
-        persistentVolume:
-          size: 8Gi
-          #storageClassName: lvms-vg1
-        type: PersistentVolume
-    managementType: Managed
+  olmCatalogPlacement: guest
   services:
+  - service: APIServer
+    servicePublishingStrategy:
+      type: LoadBalancer
   - service: OAuthServer
     servicePublishingStrategy:
       type: Route
@@ -58,11 +61,11 @@ spec:
   - service: Ignition
     servicePublishingStrategy:
       type: Route
-  olmCatalogPlacement: guest
 
   # ========================================================================================
-  # Additional Trust Bundle Configuration
+  # Disconnected/Private Registry Configuration
   # ========================================================================================
+
   additionalTrustBundle:
     name: user-ca-bundle
   configuration:
@@ -70,9 +73,6 @@ spec:
       additionalTrustedCA:
         name: user-ca-bundle
 
-  # ========================================================================================
-  # Disconnected/Private Registry Configuration
-  # ========================================================================================
 #  imageContentSources:
 #  - source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
 #    mirrors:
