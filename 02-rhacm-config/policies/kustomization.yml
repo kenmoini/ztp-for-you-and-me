@@ -6,3 +6,4 @@ resources:
   - pipelines-operator.yml
   - acs-operator.yml
   - compliance-operator.yml
+  - hcp-bmh-console.yml

@@ -1,0 +1,107 @@
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: hcp-bmh-console
+  namespace: rhacm-config
+  annotations:
+    policy.open-cluster-management.io/description: Creates (most of) the things needed to
+      automatically bring up the OpenShift Console for a Hosted Control Plane
+      cluster using Bare Metal Workers
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: metallb-namespace
+        spec:
+          remediationAction: enforce
+          severity: critical
+          namespaceSelector:
+            include:
+              - metallb
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: metallb
+                  annotations:
+                    workload.openshift.io/allowed: management
+          pruneObjectBehavior: DeleteIfCreated
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1beta1
+        kind: OperatorPolicy
+        metadata:
+          name: install-metallb
+        spec:
+          remediationAction: enforce
+          severity: critical
+          complianceType: musthave
+          subscription:
+            name: metallb-operator
+            namespace: metallb
+            channel: stable
+            source: redhat-operators
+            sourceNamespace: openshift-marketplace
+          upgradeApproval: Automatic
+          pruneObjectBehavior: DeleteIfCreated
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-metallb-system
+        spec:
+          remediationAction: enforce
+          severity: high
+          namespaceSelector:
+            include:
+              - metallb
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: metallb.io/v1beta1
+                kind: MetalLB
+                metadata:
+                  name: metallb
+                  namespace: metallb
+          pruneObjectBehavior: DeleteIfCreated
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-lb-service
+        spec:
+          remediationAction: enforce
+          severity: high
+          namespaceSelector:
+            include:
+              - metallb
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                kind: Service
+                apiVersion: v1
+                metadata:
+                  name: metallb-ingress
+                  namespace: openshift-ingress
+                spec:
+                  ports:
+                    - name: http
+                      protocol: TCP
+                      port: 80
+                      targetPort: 80
+                    - name: https
+                      protocol: TCP
+                      port: 443
+                      targetPort: 443
+                  selector:
+                    ingresscontroller.operator.openshift.io/deployment-ingresscontroller: default
+                  type: LoadBalancer
+          pruneObjectBehavior: DeleteIfCreated
