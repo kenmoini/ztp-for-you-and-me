@@ -1,0 +1,24 @@
+variables:
+  - group: RegistrySecrets
+
+trigger:
+  branches: # Branch names to include or exclude for triggering a run.
+    include: [ 'main' ]
+  paths: # File paths to include or exclude for triggering a run.
+    include: [ '50-ansible/execution-environments' ]
+
+schedules:
+  - cron: '0 0 * * 0'
+    displayName: Sunday night builds
+    branches:
+      include:
+        - main
+
+extends:
+  template: ../../.azure/pipelines-ee-base.yml
+  parameters:
+    REGISTRY_USERNAME: $(REGISTRY_USERNAME)
+    REGISTRY_PASSWORD: $(REGISTRY_PASSWORD)
+    REGISTRY_PATH: kenmoini
+    EE_IMAGE_NAME: ansible-ztp4uam-ee
+    EE_FOLDER_NAME: 50-ansible/execution-environments

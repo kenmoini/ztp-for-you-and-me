@@ -1,0 +1,29 @@
+# ansible-builder build -f decision-environment.yaml -t ztp4uam-de:latest
+# podman tag ztp4uam-de:latest quay.io/kenmoini/ztp4uam-de:latest
+# podman push quay.io/kenmoini/ztp4uam-de:latest
+version: 3
+
+images:
+  base_image:
+    name: 'registry.redhat.io/ansible-automation-platform-24/de-minimal-rhel8:latest'
+
+dependencies:
+  galaxy:
+    collections:
+      - name: ansible.eda
+      - name: sabre1041.eda
+        version: 1.0.0
+  python: requirements.txt
+  system: bindep.txt
+  python_interpreter:
+    package_system: "python39"
+
+options:
+  package_manager_path: /usr/bin/microdnf
+
+additional_build_steps:
+  prepend_final: |
+    RUN dnf install -y 'dnf-command(config-manager)' && rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm && /usr/bin/crb enable && dnf update -y && dnf install git -y && dnf clean all && ansible --version
+  append_final: |
+    RUN curl -L https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz | tar -xvzf - -C /usr/local/bin/ oc kubectl && chmod 755 /usr/local/bin/oc && chmod 755 /usr/local/bin/kubectl \
+     && curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
