@@ -7,3 +7,9 @@ jsonpatch
 openshift
 pyvmomi
 PyYAML
+ansible-rulebook
+asyncio
+aiokafka
+aiohttp
+aiosignal
+aiomqtt
