@@ -1,0 +1,87 @@
+# helm repo add external-dns https://kubernetes-sigs.github.io/external-dns/
+# helm repo update
+# helm upgrade --install -f values.yaml -n external-dns external-dns external-dns/external-dns
+
+env:
+  - name: PDNS_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: pdns-secret
+        key: PDNS_API_KEY
+  - name: PDNS_API_URI
+    valueFrom:
+      secretKeyRef:
+        name: pdns-secret
+        key: PDNS_API_URI
+  - name: PDNS_SERVER_ID
+    valueFrom:
+      secretKeyRef:
+        name: pdns-secret
+        key: PDNS_SERVER_ID
+
+# -- [Resources](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/) for the `external-dns` container.
+resources:
+  limits:
+    cpu: 250m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# -- Log level.
+logLevel: debug
+
+# -- Log format.
+logFormat: text
+
+# -- Interval for DNS updates.
+interval: 1m
+
+# -- If `true`, triggers run loop on create/update/delete events in addition of regular interval.
+triggerLoopOnEvent: true
+
+# -- _Kubernetes_ resources to monitor for DNS entries.
+sources:
+  - service
+  - ingress
+  - openshift-route
+  - crd
+
+# -- How DNS records are synchronized between sources and providers; available values are `sync` & `upsert-only`.
+policy: sync
+
+# -- Specify the registry for storing ownership and labels.
+# Valid values are `txt`, `aws-sd`, `dynamodb` & `noop`.
+registry: txt
+# -- (string) Specify an identifier for this instance of _ExternalDNS_ wWhen using a registry other than `noop`.
+txtOwnerId: "hub"
+# -- (string) Specify a prefix for the domain names of TXT records created for the `txt` registry.
+# Mutually exclusive with `txtSuffix`.
+txtPrefix: extdns-
+# -- (string) Specify a suffix for the domain names of TXT records created for the `txt` registry.
+# Mutually exclusive with `txtPrefix`.
+txtSuffix:
+
+# -- Limit possible target zones by domain suffixes.
+domainFilters:
+  - ocp.lab.kemo.network
+
+# -- Intentionally exclude domains from being managed.
+excludeDomains: []
+
+# -- (string) Filter resources queried for endpoints by label selector
+labelFilter: "enabled.external-dns.kemo.labs=true"
+
+# -- Record types to manage (default: A, AAAA, CNAME)
+managedRecordTypes:
+  - A
+  - CNAME
+
+provider:
+  name: pdns
+
+# -- Extra arguments to provide to _ExternalDNS_.
+extraArgs:
+  - --pdns-server=$(PDNS_API_URI)
+  - --pdns-api-key=$(PDNS_API_KEY)
+  - --pdns-server-id=$(PDNS_SERVER_ID)
