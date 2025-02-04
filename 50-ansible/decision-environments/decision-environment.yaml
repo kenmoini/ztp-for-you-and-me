@@ -5,18 +5,29 @@ version: 3
 
 images:
   base_image:
-    name: 'registry.redhat.io/ansible-automation-platform-24/de-minimal-rhel8:latest'
+    #name: 'registry.redhat.io/ansible-automation-platform-24/de-minimal-rhel8:latest'
+    name: registry.access.redhat.com/ubi9-minimal:latest
+
+additional_build_files:
+  - src: ansible.cfg
+    dest: configs
 
 dependencies:
+  ansible_core:
+    package_pip: ansible-core
+  ansible_runner:
+    package_pip: ansible-runner
   galaxy:
     collections:
       - name: ansible.eda
+      - name: dynatrace.event_driven_ansible
       - name: sabre1041.eda
         version: 1.0.0
   python: requirements.txt
   system: bindep.txt
   python_interpreter:
-    package_system: "python39"
+    package_system: "python3.11"
+    python_path: "/usr/bin/python3.11"
 
 options:
   package_manager_path: /usr/bin/microdnf
@@ -27,3 +38,8 @@ additional_build_steps:
   append_final: |
     RUN curl -L https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz | tar -xvzf - -C /usr/local/bin/ oc kubectl && chmod 755 /usr/local/bin/oc && chmod 755 /usr/local/bin/kubectl \
      && curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    RUN for dir in /home/runner /home/runner/.ansible /home/runner/.ansible/tmp /runner /home/runner /runner/env /runner/inventory /runner/project /runner/artifacts ; do mkdir -m 0775 -p $dir ; chmod -R g+rwx $dir ; chgrp -R root $dir ; done && for file in /home/runner/.ansible/galaxy_token /etc/passwd /etc/group ; do touch $file ; chmod g+rw $file ; chgrp root $file ; done
+    RUN rm -rf /usr/bin/python3 && ln -s python3.11 /usr/bin/python3
+    VOLUME /runner
+    WORKDIR /runner
+    ENV HOME=/home/runner
