@@ -27,6 +27,7 @@ jobs:
       EE_IMAGE_NAME: 'ansible-ztp4yam-ee'
       EE_IMAGE_TAG: 'latest'
       EE_FOLDER_NAME: '50-ansible/execution-environments'
+      EE_FILE_NAME: execution-environment.yaml
     secrets:
       REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
       REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
