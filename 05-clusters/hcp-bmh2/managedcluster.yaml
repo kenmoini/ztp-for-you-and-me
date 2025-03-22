@@ -11,7 +11,7 @@ metadata:
     vendor: OpenShift
     name: 'hcp-bmh1'
     cluster.open-cluster-management.io/clusterset: 'default'
-    hcp-bmh-cluster: "true"
+    hcpType: baremetal
   name: 'hcp-bmh2'
 spec:
   hubAcceptsClient: true

@@ -10,7 +10,7 @@ spec:
   clusterLabels:
     cloud: BareMetal
     vendor: OpenShift
-    hcp-bmh-cluster: "true"
+    hcpType: baremetal
   applicationManager:
     enabled: true
   policyController:

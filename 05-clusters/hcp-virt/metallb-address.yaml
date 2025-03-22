@@ -1,0 +1,23 @@
+---
+kind: L2Advertisement
+apiVersion: metallb.io/v1beta1
+metadata:
+  name: hcp-pools
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - v70-hcp-virt-api
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: v70-hcp-virt-api
+  namespace: metallb-system
+spec:
+  addresses:
+    - 192.168.70.109/32 # Single IP for the API
+  autoAssign: true
+  serviceAllocation:
+    priority: 50
+    namespaces: 
+      - clusters-hypershift-virt

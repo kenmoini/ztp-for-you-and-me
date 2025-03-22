@@ -6,11 +6,10 @@ resources:
   - namespaces.yaml
   - pull-secret.yaml
   - secret-ssh-key.yaml
-  - configmap-ca.yaml
   - config-ntp.yaml
   - config-imagemirrors.yaml
-  - config-imagemirrors.yaml
   - config-machineconfig-imgtag.yaml
+  - configmap-ca.yaml
   - nodepool.yaml
   - managedcluster.yaml
   - klusterletaddonconfig.yaml
