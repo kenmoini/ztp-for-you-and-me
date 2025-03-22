@@ -6,6 +6,13 @@ data:
   config.yml: |-
     app:
       assets:
+        - source: https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.18/latest/rhcos-live.x86_64.iso
+          destination: "/tmp/server/pub/openshift-v4/x86_64/dependencies/rhcos/4.18/latest/rhcos-live.x86_64.iso"
+          #overwrite: true
+        - source: https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.18/latest/rhcos-live-rootfs.x86_64.img
+          destination: "/tmp/server/pub/openshift-v4/x86_64/dependencies/rhcos/4.18/latest/rhcos-live-rootfs.x86_64.img"
+          #overwrite: true
+
         - source: https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.17/latest/rhcos-live.x86_64.iso
           destination: "/tmp/server/pub/openshift-v4/x86_64/dependencies/rhcos/4.17/latest/rhcos-live.x86_64.iso"
           #overwrite: true

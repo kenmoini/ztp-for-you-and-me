@@ -56,7 +56,7 @@ spec:
               memory: "500Mi"
           volumeMounts:
             - name: mirror-config
-              mountPath: /etc/ztp-mirror
+              mountPath: /etc/http-mirror
             - name: ztp-mirror
               mountPath: /tmp/server/pub
             - mountPath: /etc/pki/ca-trust/extracted/pem
