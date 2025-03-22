@@ -7,4 +7,5 @@ resources:
 
 components:
   - ../../components/increase-dci-resources
+  - ../../components/extra-templates
   - ../../components/mirror

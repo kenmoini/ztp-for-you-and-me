@@ -3,18 +3,17 @@ apiVersion: hco.kubevirt.io/v1beta1
 kind: HyperConverged
 metadata:
   name: kubevirt-hyperconverged
-  annotations:
-    deployOVS: 'false'
 spec:
 
   # ========================================================================================
   # Disconnected/Private Registry Configuration
   # ========================================================================================
 
-  #storageImport:
-  #  # Disable TLS validation for the private registry
-  #  insecureRegistries:
-  #    - quay-ptc.jfrog.lab.kemo.network
+  storageImport:
+    # Disable TLS validation for the private registry
+    # Or use the certConfigMap parameter to provide the CA certificate as shown below
+    insecureRegistries:
+      - quay-ptc.jfrog.lab.kemo.network
 
   # In disconnected environments you have to specifically tell the operator to use the disconnected registry
   # It doesn't pick it up from the global cluster mirror configuration :)
@@ -84,6 +83,7 @@ spec:
                 pullMethod: node
                 url: 'docker://disconn-harbor.d70.kemo.labs/quay-ptc/containerdisks/centos-stream:10'
                 secretRef: private-ps
+                certConfigMap: private-registry-ca
             storage:
               resources:
                 requests:
