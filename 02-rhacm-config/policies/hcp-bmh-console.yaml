@@ -3,14 +3,11 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   name: hcp-bmh-console
-  namespace: rhacm-config
   annotations:
-    policy.open-cluster-management.io/description: Creates (most of) the things needed to
-      automatically bring up the OpenShift Console for a Hosted Control Plane
-      cluster using Bare Metal Workers
-    policy.open-cluster-management.io/categories: CM Configuration Management
-    policy.open-cluster-management.io/standards: NIST SP 800-53
-    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+    policy.open-cluster-management.io/description: Creates (most of) the things needed to automatically bring up the OpenShift Console for a Hosted Control Plane cluster using Bare Metal Workers
+    policy.open-cluster-management.io/categories: OCPCM - OpenShift Configuration Management
+    policy.open-cluster-management.io/standards: Kemo Labs 2025
+    policy.open-cluster-management.io/controls: CBC - Cluster Baseline Configuration
 spec:
   disabled: false
   policy-templates:
