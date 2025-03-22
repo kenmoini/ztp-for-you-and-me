@@ -3,14 +3,20 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
 metadata:
   name: error-pages
-placementBindingDefaults:
-  name: all-openshift-clusters
 policyDefaults:
   namespace: rhacm-config
   placement:
     placementName: all-openshift-clusters
   remediationAction: enforce
-  severity: medium
+  consolidateManifests: false # Put each object in its own ConfigurationPolicy in the Policy
+  severity: low
+  categories:
+    - OCPCM - OpenShift Configuration Management
+  standards:
+    - Kemo Labs 2025
+  controls:
+    - CBC - Cluster Baseline Configuration
+  description: This policy generator creates a Policy to enforce the error pages for the default IngressController.
 policies:
   - name: error-pages
     manifests:
