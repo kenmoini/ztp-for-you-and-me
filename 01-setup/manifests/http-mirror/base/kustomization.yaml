@@ -5,9 +5,7 @@ kind: Kustomization
 resources:
   - ca-configmap.yaml
   - config-configmap.yaml
-  - pvc.yaml
   - deployment.yaml
   - service.yaml
+  - pvc.yaml
   - route.yaml
-
-namespace: multicluster-engine

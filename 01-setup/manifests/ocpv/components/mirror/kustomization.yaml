@@ -1,0 +1,12 @@
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+patches:
+  - path: hyperconverged.yaml
+    target:
+      kind: HyperConverged
+
+resources:
+  - pull-secrets.yaml
+  - private-registry-ca.yaml

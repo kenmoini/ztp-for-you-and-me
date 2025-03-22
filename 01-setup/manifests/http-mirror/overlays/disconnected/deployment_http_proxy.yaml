@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mirror-server
+spec:
+  template:
+    spec:
+      containers:
+        - name: mirror-server
+          env:
+            - name: HTTP_PROXY
+              value: http://proxy.kemo.labs:3128
+            - name: http_proxy
+              value: http://proxy.kemo.labs:3128
+            - name: HTTPS_PROXY
+              value: http://proxy.kemo.labs:3128
+            - name: https_proxy
+              value: http://proxy.kemo.labs:3128
+            - name: NO_PROXY
+              value: '.kemo.labs,.kemo.network,192.168.0.0/16,172.16.0.0/12,10.0.0.0/8,.local,.cluster,.svc,100.64.0.0/10'
+            - name: no_proxy
+              value: '.kemo.labs,.kemo.network,192.168.0.0/16,172.16.0.0/12,10.0.0.0/8,.local,.cluster,.svc,100.64.0.0/10'
