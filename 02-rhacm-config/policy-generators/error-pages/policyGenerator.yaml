@@ -1,0 +1,17 @@
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: error-pages
+placementBindingDefaults:
+  name: all-openshift-clusters
+policyDefaults:
+  namespace: rhacm-config
+  placement:
+    placementName: all-openshift-clusters
+  remediationAction: enforce
+  severity: medium
+policies:
+  - name: error-pages
+    manifests:
+      - path: manifests
