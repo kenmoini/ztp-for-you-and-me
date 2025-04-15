@@ -11,3 +11,4 @@ namespace: external-dns
 resources:
   - rbac.yaml
   - pdns-secret.yaml
+  - namespace.yaml
